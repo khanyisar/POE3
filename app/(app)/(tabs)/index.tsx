@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 export default function Menu() {
   const { menuData } = useContext(MenuContext);
-  const [tabs] = useState<CourseType[]>(['starter', 'main', 'desert']);
+  const [tabs] = useState<CourseType[]>(['starter', 'main', 'dessert']);
   const [selectedTab, setSelectedTab] = useState<CourseType>('starter');
   const [items, setItems] = useState<MenuType[]>([]);
 
@@ -20,7 +20,7 @@ export default function Menu() {
 
   return (
     <YStack flex={1} padding={16} gap={16}>
-      <Text fontSize={28} fontWeight={'600'}>Christoffel Courses</Text>
+      <Text fontSize={28} fontWeight={'600'}>Bougee Chef</Text>
       <XStack gap={8}>
         {
           tabs.map((tab: CourseType, index: number) => (

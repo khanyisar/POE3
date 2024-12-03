@@ -1,4 +1,4 @@
-export type CourseType = 'starter' | 'main' | 'desert';
+export type CourseType = 'starter' | 'main' | 'dessert';
 
 export type MenuType = {
     id: string;

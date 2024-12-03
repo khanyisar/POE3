@@ -1,12 +1,20 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/components/useColorScheme';
+import * as SplashScreen from 'expo-splash-screen';
+
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { TamaguiProvider, createTamagui } from 'tamagui';
+
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { MenuType } from '@/types';
+import { Stack } from 'expo-router';
+import { createContext } from 'react';
+import defaultConfig from '@tamagui/config/v3';
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+import { useState } from 'react';
+
+const config = createTamagui(defaultConfig)
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -15,7 +23,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(tabs)/menu',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -45,15 +53,19 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+export const MenuContext = createContext<any>([]);
 
+function RootLayoutNav() {
+  const [menuData, setMenuData] = useState<MenuType[]>([]);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <MenuContext.Provider value={{ menuData, setMenuData}}>
+      <ThemeProvider value={DefaultTheme}>
+        <TamaguiProvider config={config}>
+          <Stack screenOptions={{ headerBackTitle: "", headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </TamaguiProvider>
+      </ThemeProvider >
+    </MenuContext.Provider >
   );
 }
